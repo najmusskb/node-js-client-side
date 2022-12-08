@@ -1,7 +1,5 @@
-
 import './App.css';
 import { useEffect, useState } from 'react';
-
 function App() {
   const [users, setUsers] = useState([]);
 
@@ -14,22 +12,33 @@ function App() {
 
   const handleAddUser = event => {
     event.preventDefault();
+    const name = event.target.name.value;
+    const email = event.target.email.value;
+    const user = { name, email };
+    console.log(user)
+    fetch('http://localhost:5000/users', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json'
+      },
+      body: JSON.stringify(user)
+
+    })
+      .then(res => res.json())
+      .then(data => console.log(data))
+      .catch(err => console.error(err))
+
+    event.target.reset();
   }
 
   return (
     <div className="App">
-
-
-
       <form onSubmit={handleAddUser}>
-        <input type="text" name='name' /><br /><br />
-        <input type="email" name='email' />
+        <input type="text" name='name' placeholder='Name' /><br /><br />
+        <input type="email" name='email' placeholder='Email' />
         <br /><br />
         <button type='submit'>Add User</button>
       </form >
-
-
-
       <h2>users:{users.length}</h2>
       <div>
         {
